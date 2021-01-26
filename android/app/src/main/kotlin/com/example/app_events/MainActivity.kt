@@ -1,4 +1,4 @@
-package com.example.app_events
+package com.troms.mobile_apps
 
 import io.flutter.embedding.android.FlutterActivity
 

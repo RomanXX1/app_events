@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "475666969043",
+    "project_id": "new-projects-a662a",
+    "storage_bucket": "new-projects-a662a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475666969043:android:a80157e3b0cf5752a87f26",
+        "android_client_info": {
+          "package_name": "com.troms.mobile_apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "475666969043-jofkfiv68lrtuoon58a3hu58hp5qdo74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsgo5ykYhISTr6lYZNWSV0mqdELA7L8r4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "475666969043-jofkfiv68lrtuoon58a3hu58hp5qdo74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

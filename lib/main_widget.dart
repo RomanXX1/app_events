@@ -1,3 +1,6 @@
+import 'package:app_events/activities/enter_actitvities/android/login_activity_android.dart';
+import 'package:app_events/activities/enter_actitvities/android/work_activity_android.dart';
+import 'package:app_events/activities/enter_actitvities/ios/login_activity_ios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,9 +15,7 @@ class MainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isAndroid) {
-      return Scaffold(
-        body: Center(child: MainWidgetAndroid()),
-      );
+      return MainWidgetAndroid();
     } else if (isIOS) {
       return Scaffold(body: Center(child: MainWidgetIOS()));
     }
@@ -23,10 +24,12 @@ class MainWidget extends StatelessWidget {
   Widget MainWidgetAndroid() {
     return BlocBuilder<MainBlock, MainStates>(
       builder: (context, state) {
-        // if (state is MainWindowShowState) {
-        //   return MainWindowShow_Android();
-        // }
-        return Text('Android');
+        if (state is LoginActivityState_Android) {
+          return LoginActivity_Android();
+        } else if (state is WorkActivityState_Android) {
+          return WorkActivity_Android();
+        }
+        return LoginActivity_Android();
       },
     );
   }
@@ -34,7 +37,12 @@ class MainWidget extends StatelessWidget {
   Widget MainWidgetIOS() {
     return BlocBuilder<MainBlock, MainStates>(
       builder: (context, state) {
-        return Text('iOS');
+        if (state is LoginActivityState_iOS) {
+          return LoginActivity_iOS();
+        } else if (state is WorkActivityState_iOS) {
+          return Text('iOS');
+        }
+        return LoginActivity_iOS();
       },
     );
   }

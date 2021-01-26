@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,8 +39,27 @@ class MasterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    // _firebaseMessaging.configure(
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     print('onMessage: $message');
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     print('onLaunge: $message');
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     print('onResume: $message');
+    //   },
+    // );
+    // _firebaseMessaging.getToken().then((token) {
+    //   print('token: $token'); // Print the Token in Console
+    // });
+    // _firebaseMessaging.requestNotificationPermissions(
+    //     const IosNotificationSettings(sound: true, badge: true, alert: true));
+
     return BlocProvider<MainBlock>(
-      create: (context) => MainBlock(objRepository: repository),
+      create: (context) => MainBlock(
+          objRepository: repository, isAndroid: isAndroid, isIOS: isIOS),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: MainWidget(
