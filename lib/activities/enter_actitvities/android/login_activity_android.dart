@@ -1,3 +1,4 @@
+import 'package:app_events/server/repository.dart';
 import 'package:flutter/material.dart';
 
 class LoginActivity_Android extends StatelessWidget {
@@ -174,11 +175,24 @@ class _Btn_Enter_State extends State<Btn_Enter_State> {
   void submit() {
     setState(() {
       _state_btn = 1;
-      Future.delayed(const Duration(milliseconds: 5000), () {
+      Future<String> rezult =
+          ObjRepository(path_DB: '', login: 'Administrator', pass: '')
+              .check_connection();
+      // Future.delayed(const Duration(milliseconds: 5000), () {
+      //   setState(() {
+      //     _state_btn = 0;
+      //   });
+      // });
+
+      if (rezult == 'Ok') {
         setState(() {
           _state_btn = 0;
         });
-      });
+      } else {
+        setState(() {
+          _state_btn = 0;
+        });
+      }
     });
   }
 
