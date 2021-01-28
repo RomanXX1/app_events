@@ -175,25 +175,45 @@ class _Btn_Enter_State extends State<Btn_Enter_State> {
   void submit() {
     setState(() {
       _state_btn = 1;
-      Future<String> rezult =
-          ObjRepository(path_DB: '', login: 'Administrator', pass: '')
-              .check_connection();
-      // Future.delayed(const Duration(milliseconds: 5000), () {
-      //   setState(() {
-      //     _state_btn = 0;
-      //   });
-      // });
 
-      if (rezult == 'Ok') {
-        setState(() {
-          _state_btn = 0;
-        });
-      } else {
-        setState(() {
-          _state_btn = 0;
-        });
-      }
+      ObjRepository(path_DB: '', login: 'sync', pass: '123')
+          .check_connection()
+          .then(_enter_or_not)
+          .timeout(Duration(seconds: 12))
+          .catchError((onError) => {_error_internet()});
     });
+  }
+
+  void _enter_or_not(String answer) {
+    if (answer == "123") {
+      show_snack_error(context, 'Все отлично. Надо входить в приложение');
+    } else {
+      show_snack_error(context, 'Проверьте введенные данные');
+    }
+
+    setState(() {
+      _state_btn = 0;
+    });
+  }
+
+  void _error_internet() {
+    setState(() {
+      _state_btn = 0;
+    });
+    show_snack_error(context, 'Не удалось соединиться с сервером');
+  }
+
+  void show_snack_error(BuildContext context, String msg_error) {
+    final snackBar = SnackBar(
+      content: Text(msg_error),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {
+          // Some code to undo the change.
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   Widget btnLogin(state_btn, BuildContext context) {
