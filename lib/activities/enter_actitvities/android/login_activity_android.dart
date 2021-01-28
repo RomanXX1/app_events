@@ -1,5 +1,7 @@
+import 'package:app_events/activities/enter_actitvities/android/work_activity_android.dart';
 import 'package:app_events/server/repository.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginActivity_Android extends StatelessWidget {
   @override
@@ -22,6 +24,14 @@ class _ActivityStateState extends State<ActivityState> {
   @override
   void initState() {
     super.initState();
+    _loadPrefs();
+  }
+
+  _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      login = 'asgf';
+    });
   }
 
   @override
@@ -186,7 +196,8 @@ class _Btn_Enter_State extends State<Btn_Enter_State> {
 
   void _enter_or_not(String answer) {
     if (answer == "123") {
-      show_snack_error(context, 'Все отлично. Надо входить в приложение');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => WorkActivity_Android()));
     } else {
       show_snack_error(context, 'Проверьте введенные данные');
     }
