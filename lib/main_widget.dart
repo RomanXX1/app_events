@@ -3,7 +3,6 @@ import 'package:app_events/activities/enter_actitvities/android/work_activity_an
 import 'package:app_events/activities/enter_actitvities/ios/login_activity_ios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'blocks/main_block/main_block.dart';
 import 'blocks/main_block/main_states.dart';
 

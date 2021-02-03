@@ -1,6 +1,9 @@
 import 'package:app_events/activities/enter_actitvities/android/work_activity_android.dart';
+import 'package:app_events/app_state/app_state.dart';
+import 'package:app_events/app_state/save_state_data.dart';
 import 'package:app_events/server/repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginActivity_Android extends StatelessWidget {
@@ -19,7 +22,8 @@ class _ActivityStateState extends State<ActivityState> {
   String name = '';
   String path = '';
   String login = '';
-  String pwd = '';
+  String pass = '';
+  String token = '';
 
   @override
   void initState() {
@@ -30,7 +34,21 @@ class _ActivityStateState extends State<ActivityState> {
   _loadPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      login = 'asgf';
+      name = prefs.getString('name') ?? '';
+      path = prefs.getString('path') ?? '';
+      login = prefs.getString('login') ?? '';
+      pass = prefs.getString('pass') ?? '';
+      token = prefs.getString('token') ?? '';
+
+      if (path == '') {
+        path = 'http://sql1.1caero.ru:1086/tr_ka/';
+      }
+
+      StoreProvider.of<AppState>(context).dispatch(SetNameDB(name));
+      StoreProvider.of<AppState>(context).dispatch(SetPathDB(path));
+      StoreProvider.of<AppState>(context).dispatch(SetLogin(login));
+      StoreProvider.of<AppState>(context).dispatch(SetPass(pass));
+      StoreProvider.of<AppState>(context).dispatch(SetToken(token));
     });
   }
 
@@ -42,7 +60,9 @@ class _ActivityStateState extends State<ActivityState> {
           Padding(
             padding: EdgeInsets.only(top: 64.0, left: 32.0, right: 32.0),
             child: TextFormField(
-              onChanged: (value) {},
+              onChanged: (value) => {
+                StoreProvider.of<AppState>(context).dispatch(SetNameDB(value)),
+              },
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: "Название подключения",
@@ -65,7 +85,9 @@ class _ActivityStateState extends State<ActivityState> {
           Padding(
             padding: EdgeInsets.only(top: 32.0, left: 32.0, right: 32.0),
             child: TextFormField(
-              onChanged: (value) {},
+              onChanged: (value) => {
+                StoreProvider.of<AppState>(context).dispatch(SetPathDB(value)),
+              },
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: "Путь к информационной базе",
@@ -88,7 +110,9 @@ class _ActivityStateState extends State<ActivityState> {
           Padding(
             padding: EdgeInsets.only(top: 32.0, left: 32.0, right: 32.0),
             child: TextFormField(
-              onChanged: (value) {},
+              onChanged: (value) => {
+                StoreProvider.of<AppState>(context).dispatch(SetLogin(value)),
+              },
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: "Имя пользователя",
@@ -111,7 +135,9 @@ class _ActivityStateState extends State<ActivityState> {
           Padding(
             padding: EdgeInsets.only(top: 32.0, left: 32.0, right: 32.0),
             child: TextFormField(
-              onChanged: (value) {},
+              onChanged: (value) => {
+                StoreProvider.of<AppState>(context).dispatch(SetPass(value)),
+              },
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: InputDecoration(
@@ -126,7 +152,7 @@ class _ActivityStateState extends State<ActivityState> {
                 ),
               ),
               controller: TextEditingController.fromValue(TextEditingValue(
-                text: path,
+                text: pass,
                 // selection: TextSelection.collapsed(
                 //     offset: name == "" ? 0 : name.length),
               )),
@@ -183,15 +209,29 @@ class _Btn_Enter_State extends State<Btn_Enter_State> {
   }
 
   void submit() {
-    setState(() {
-      _state_btn = 1;
+    String _name = StoreProvider.of<AppState>(context).state.name_db;
+    String _path = StoreProvider.of<AppState>(context).state.path_db;
+    String _login = StoreProvider.of<AppState>(context).state.login;
+    String _pass = StoreProvider.of<AppState>(context).state.pass;
+    String _token = StoreProvider.of<AppState>(context).state.token;
+    String _body_str = _login + ',' + 'Android' + ',' + '1.0' + ',' + _token;
 
-      ObjRepository(path_DB: '', login: 'sync', pass: '123')
-          .check_connection()
-          .then(_enter_or_not)
-          .timeout(Duration(seconds: 12))
-          .catchError((onError) => {_error_internet()});
-    });
+    if (_name == '' || _path == '' || _login == '' || _pass == '') {
+      show_snack_error(context, 'Заполните все поля');
+    } else {
+      setState(() {
+        _state_btn = 1;
+
+        _incrementPrefs(_check_remember, _name, _path, _login, _pass);
+
+        ObjRepository(
+                path_DB: _path, login: _login, pass: _pass, body_str: _body_str)
+            .check_connection()
+            .then(_enter_or_not)
+            .timeout(Duration(seconds: 12))
+            .catchError((onError) => {_error_internet()});
+      });
+    }
   }
 
   void _enter_or_not(String answer) {
@@ -239,5 +279,23 @@ class _Btn_Enter_State extends State<Btn_Enter_State> {
             AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
       );
     }
+  }
+}
+
+_incrementPrefs(bool checkRemember, String name, String path, String login,
+    String pass) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (checkRemember) {
+    prefs.setString('name', name);
+    prefs.setString('path', path);
+    prefs.setString('login', login);
+    prefs.setString('pass', pass);
+    prefs.setBool("remember", checkRemember);
+  } else {
+    prefs.setString('name', '');
+    prefs.setString('path', '');
+    prefs.setString('login', '');
+    prefs.setString('pass', '');
+    prefs.setBool("remember", false);
   }
 }
