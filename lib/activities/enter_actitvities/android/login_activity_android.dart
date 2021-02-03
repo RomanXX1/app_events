@@ -119,7 +119,7 @@ class _ActivityStateState extends State<ActivityState> {
                 icon: Padding(
                   padding: EdgeInsets.only(top: 16.0),
                   child: Icon(
-                    Icons.login,
+                    Icons.ac_unit,
                     color: Theme.of(context).primaryColor,
                     size: 24.0,
                   ),
