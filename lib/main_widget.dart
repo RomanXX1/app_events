@@ -21,28 +21,10 @@ class MainWidget extends StatelessWidget {
   }
 
   Widget MainWidgetAndroid() {
-    return BlocBuilder<MainBlock, MainStates>(
-      builder: (context, state) {
-        if (state is LoginActivityState_Android) {
-          return LoginActivity_Android();
-        } else if (state is WorkActivityState_Android) {
-          return WorkActivity_Android();
-        }
-        return LoginActivity_Android();
-      },
-    );
+    return LoginActivity_Android();
   }
 
   Widget MainWidgetIOS() {
-    return BlocBuilder<MainBlock, MainStates>(
-      builder: (context, state) {
-        if (state is LoginActivityState_iOS) {
-          return LoginActivity_iOS();
-        } else if (state is WorkActivityState_iOS) {
-          return Text('iOS');
-        }
-        return LoginActivity_iOS();
-      },
-    );
+    return LoginActivity_iOS();
   }
 }

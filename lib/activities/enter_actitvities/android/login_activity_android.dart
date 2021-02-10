@@ -1,8 +1,11 @@
 import 'package:app_events/activities/enter_actitvities/android/work_activity_android.dart';
 import 'package:app_events/app_state/app_state.dart';
 import 'package:app_events/app_state/save_state_data.dart';
+import 'package:app_events/blocks/main_block/main_block.dart';
+import 'package:app_events/blocks/main_block/main_events.dart';
 import 'package:app_events/server/repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -235,6 +238,8 @@ class _Btn_Enter_State extends State<Btn_Enter_State> {
   }
 
   void _enter_or_not(String answer) {
+    final MainBlock mainBloc = BlocProvider.of<MainBlock>(context);
+
     if (answer == "123") {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => WorkActivity_Android()));
