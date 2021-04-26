@@ -10,7 +10,10 @@ class getDataVer {
     var response = await http.post(path_DB + 'hs/info_mobile/get_data/',
         headers: {HttpHeaders.authorizationHeader: "Basic $authHeader"});
     if (response.statusCode == 200) {
-    } else {}
+      return DataVer.fromJson(json.decode(response.body));
+    } else {
+      return Future.error('Ошибка получения данных');
+    }
   }
 }
 
