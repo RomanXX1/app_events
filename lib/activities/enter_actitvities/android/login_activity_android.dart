@@ -60,6 +60,7 @@ class _ActivityStateState extends State<ActivityState> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          Image.asset('assets/images/hat_img.png'),
           Padding(
             padding: EdgeInsets.only(top: 64.0, left: 32.0, right: 32.0),
             child: TextFormField(
